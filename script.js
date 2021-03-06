@@ -1,52 +1,42 @@
 'use strict';
 
-function DomElements(selector, height, width, bg, fontSize, cssStyle){
+function DomElements(selector = '.someclass', height = '100px', width = '100px', bg = 'gray', fontSize = '20px', 
+message = 'Получилось!'){
 
-    this.selector = selector || undefined;
-    this.height = 'height: ' + height || undefined;
-    this.width = 'width: ' + width || undefined;
-    this.bg = 'background-color: ' + bg || undefined;
-    this.fontSize = 'font-size: ' + fontSize || undefined;
-
-    this.cssStyle = this.height + '; ' + this.width + '; ' + this.bg + 
-    '; ' + this.fontSize + ';';
-
+    this.selector = selector;
+    this.height = height;
+    this.width = width;
+    this.bg = bg;
+    this.fontSize = fontSize;
+    this.message = message;
 }
 
-const selector = prompt('Какой элемент вы хотите создать?'),
-    height = prompt('Введите высоту элемента в пикселях'),
-    width =  prompt('Введите ширину элемента в пикселях'),
-    bg = prompt('Введите цвет элемента на английском'),
-    fontSize = prompt('Введите шрифт для текста элемента'),
-    message = prompt('Введите текст элемента');
-
 DomElements.prototype.createElement = function(){
-    let classname = '';
-    for (let i = 1; i < selector.lenght; i++){
-        classname += selector[i];
-    }
-    if(selector[0] === '.'){
+    //let classname = '';
+    if(this.selector[0] === '.'){   
         let div = document.createElement('div');
-        div.className = classname;
-        div.innerHTML = message;
-        div.style.cssText = this.cssStyle;
+        div.className = this.selector.substr(1);
+        div.innerHTML = this.message;
+        div.style.cssText = `height:${this.height}; width:${this.width}; background:${this.bg}; font-size:${this.fontSize};`;
         document.body.append(div);
-    } else if (selector[0] === '#'){
+    } else if (this.selector[0] === '#'){
         let p = document.createElement('p');
-        p.className = classname;
-        p.innerHTML = message;
-        p.style.cssText = this.cssStyle;
+        p.className = this.selector.substr(1);
+        p.innerHTML = this.message;
+        p.style.cssText = `
+        height: ${this.height};
+        width: ${this.width};
+        background-color: ${this.bg};
+        font-size: ${this.fontSize};
+        `;
         document.body.append(p);
     }
-    console.log(this.cssStyle);
 };
 
 // для cssText надо создать строку в которой по очереди будет содержаться
 // bg-color, width, height, fontSize
 
-const  newElem = new DomElements(selector, height, width, bg, fontSize);
+const  newElem = new DomElements('.newElem', '250px', '200px', 'green', '25px');
 
-console.log(newElem.selector);
 
-newElem.createElement(selector, height, width, bg, fontSize);
-console.log(newElem);
+newElem.createElement();
